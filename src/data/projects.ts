@@ -9,20 +9,12 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    name: 'Project One',
+    name: 'GROVE — Organized Group Behavior Simulation',
     blurb:
-      'A short description of what this project does, why it exists, and what problem it solves. Keep it tight.',
-    stack: ['TypeScript', 'React', 'Postgres'],
-    url: '#',
-    repo: 'https://github.com/CyberObservers/project-one',
+      'A framework and benchmark for simulating how organized groups (corporations, governments, institutions) make collective decisions, by converting historical behavior into interpretable, traceable models. GROVE includes 8,052 context-decision pairs across 44 entities and 9 domains, with time-aware and group-aware adapters for behavioral evolution and cross-organization transfer.',
+    stack: ['Python', 'LLMs', 'GPT-4o', 'Decision Trees', 'Benchmark'],
+    url: 'https://jayzou3773.github.io/projects/group-behavior-simulation/',
+    repo: 'https://github.com/jayzou3773/Organized-Group-Behavior-Simulation',
     status: 'live',
-  },
-  {
-    name: 'Project Two',
-    blurb:
-      'Another project. Replace these with your real work — open-source tools, research code, demos, etc.',
-    stack: ['Python', 'PyTorch'],
-    repo: 'https://github.com/CyberObservers/project-two',
-    status: 'wip',
   },
 ];

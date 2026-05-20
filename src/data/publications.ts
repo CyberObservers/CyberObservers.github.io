@@ -10,24 +10,20 @@ export interface Publication {
 
 export const publications: Publication[] = [
   {
-    title: 'Example Paper Title: A Study of Something Important',
-    authors: 'Your Name, Coauthor A, Coauthor B',
-    venue: 'Proceedings of Some Conference (ACM)',
-    year: 2025,
+    title:
+      'Simulating Organized Group Behavior: New Framework, Benchmark, and Analysis',
+    authors:
+      'Xinkai Zou*, Yiming Huang*, Zhuohang Wu, Jian Sha, Nan Huang, Longfei Yun, Jingbo Shang, Letian Peng  (*equal contribution)',
+    venue: 'Under submission, COLM 2026',
+    year: 2026,
     highlight: true,
     links: [
-      { label: 'PDF', url: '#' },
-      { label: 'Code', url: '#' },
-      { label: 'arXiv', url: '#' },
+      { label: 'arXiv', url: 'https://arxiv.org/abs/2604.09874' },
+      { label: 'Project', url: 'https://jayzou3773.github.io/projects/group-behavior-simulation/' },
+      { label: 'Code', url: 'https://github.com/jayzou3773/Organized-Group-Behavior-Simulation' },
+      { label: 'Demo', url: 'https://jayzou3773.github.io/projects/group-behavior-simulation/openai_tc.html' },
     ],
     abstract:
-      'A short one- or two-sentence abstract goes here. Replace with the real summary of your paper.',
-  },
-  {
-    title: 'Another Earlier Work on a Related Topic',
-    authors: 'Coauthor C, Your Name, Coauthor D',
-    venue: 'Workshop on Things',
-    year: 2024,
-    links: [{ label: 'PDF', url: '#' }],
+      'We study how organized groups — corporations, governments, institutions — make collective decisions, and propose GROVE: a benchmark of 8,052 context-decision pairs across 44 entities and 9 domains, together with a framework that converts historical behavior into interpretable, traceable decision models. Time-aware and group-aware adapters enable behavioral evolution and cross-organization transfer.',
   },
 ];
