@@ -1,0 +1,79 @@
+---
+import { SITE, NAV } from '../consts';
+import ThemeToggle from './ThemeToggle.astro';
+const { pathname } = Astro.url;
+const isActive = (href: string) =>
+  href === '/' ? pathname === '/' : pathname.startsWith(href);
+---
+
+<header>
+  <nav>
+    <a href="/" class="brand">{SITE.title}</a>
+    <div class="right">
+      <ul>
+        {NAV.map((item) => (
+          <li>
+            <a href={item.href} class:list={[{ active: isActive(item.href) }]}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <ThemeToggle />
+    </div>
+  </nav>
+</header>
+
+<style>
+  header {
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+  }
+  nav {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .brand {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.25rem;
+  }
+  li a {
+    text-decoration: none;
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+    transition: color 0.15s;
+  }
+  li a:hover {
+    color: var(--ink);
+  }
+  li a.active {
+    color: var(--ink);
+    font-weight: 500;
+  }
+</style>

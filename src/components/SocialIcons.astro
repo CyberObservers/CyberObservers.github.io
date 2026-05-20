@@ -1,0 +1,69 @@
+---
+import { SITE } from '../consts';
+
+interface Props {
+  size?: number;
+  showRss?: boolean;
+}
+
+const { size = 20, showRss = false } = Astro.props;
+---
+
+<div class="social-icons">
+  {SITE.email && (
+    <a href={`mailto:${SITE.email}`} aria-label="Email" title="Email">
+      <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="M3 7l9 6 9-6" />
+      </svg>
+    </a>
+  )}
+  {SITE.github && (
+    <a href={SITE.github} target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+      <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
+        <path d="M12 .5C5.7.5.5 5.6.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2.1c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 1.7 2.7 1.2 3.4.9.1-.7.4-1.2.7-1.5-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2.9-.3 2-.4 3-.4s2 .1 3 .4c2.2-1.5 3.2-1.2 3.2-1.2.7 1.7.2 2.9.1 3.2.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.6 18.3.5 12 .5z" />
+      </svg>
+    </a>
+  )}
+  {SITE.scholar && (
+    <a href={SITE.scholar} target="_blank" rel="noopener" aria-label="Google Scholar" title="Google Scholar">
+      <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
+        <path d="M12 2L1 9l11 7 9-5.7V18h2V9L12 2zM5 13.6v3.7l7 4.5 7-4.5v-3.7L12 18 5 13.6z" />
+      </svg>
+    </a>
+  )}
+  {SITE.linkedin && (
+    <a href={SITE.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+      <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
+        <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3v9zM6.5 8.3a1.74 1.74 0 110-3.5 1.74 1.74 0 010 3.5zM19 19h-3v-4.7c0-1.4-.5-2.3-1.7-2.3a1.83 1.83 0 00-1.7 1.2 2.18 2.18 0 00-.1.8V19h-3v-9h3v1.3a3 3 0 012.7-1.5c2 0 3.5 1.3 3.5 4.2V19z" />
+      </svg>
+    </a>
+  )}
+  {showRss && (
+    <a href="/rss.xml" aria-label="RSS feed" title="RSS">
+      <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
+        <path d="M6.18 17.82a2.18 2.18 0 11-4.36 0 2.18 2.18 0 014.36 0zM2 9.55v3.6c4.99 0 9.04 4.04 9.04 9.03h3.6c0-6.98-5.66-12.63-12.64-12.63zM2 2v3.6c10.13 0 18.36 8.23 18.36 18.4h3.6C24 11.92 14.08 2 2 2z" />
+      </svg>
+    </a>
+  )}
+</div>
+
+<style>
+  .social-icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 0.15s, transform 0.15s;
+  }
+  .social-icons a:hover {
+    color: var(--ink);
+    transform: translateY(-1px);
+  }
+</style>

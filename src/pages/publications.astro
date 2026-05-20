@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+import { publications } from '../data/publications';
+
+const byYear = publications.reduce<Record<number, typeof publications>>((acc, p) => {
+  (acc[p.year] ||= []).push(p);
+  return acc;
+}, {});
+const years = Object.keys(byYear).map(Number).sort((a, b) => b - a);
+---
+
+<BaseLayout title="Publications" description="Academic publications and preprints.">
+  <h1>Publications</h1>
+  <p class="muted intro">
+    Peer-reviewed papers, preprints, and workshop contributions.
+    For the full list see my <a href={SITE.scholar} target="_blank" rel="noopener">Google Scholar</a>.
+  </p>
+
+  {years.map((year) => (
+    <section class="year">
+      <h2>{year}</h2>
+      <ol class="pubs">
+        {byYear[year].map((p) => (
+          <li class:list={[{ featured: p.highlight }]}>
+            <div class="title">{p.title}</div>
+            <div class="authors muted">{p.authors}</div>
+            <div class="venue"><em>{p.venue}</em></div>
+            {p.abstract && <div class="abstract muted">{p.abstract}</div>}
+            {p.links && p.links.length > 0 && (
+              <div class="links">
+                {p.links.map((l) => (
+                  <a href={l.url} target="_blank" rel="noopener">[{l.label}]</a>
+                ))}
+              </div>
+            )}
+          </li>
+        ))}
+      </ol>
+    </section>
+  ))}
+</BaseLayout>
+
+<style>
+  .intro {
+    margin-bottom: 2rem;
+  }
+  .year {
+    margin-bottom: 2rem;
+  }
+  .pubs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: pub;
+  }
+  .pubs li {
+    counter-increment: pub;
+    position: relative;
+    padding: 1.25rem 0 1.25rem 2.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .pubs li::before {
+    content: counter(pub);
+    position: absolute;
+    left: 0;
+    top: 1.25rem;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    width: 2rem;
+    text-align: right;
+    padding-right: 0.5rem;
+  }
+  .pubs li.featured {
+    background: var(--accent-soft);
+    padding-left: 3rem;
+    padding-right: 1rem;
+    margin-left: -0.5rem;
+    border-radius: 4px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .pubs li.featured::before {
+    left: 0.5rem;
+    color: var(--accent);
+  }
+  .title {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+  .authors {
+    font-size: 0.9rem;
+  }
+  .venue {
+    font-size: 0.95rem;
+    margin-top: 0.2rem;
+  }
+  .abstract {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .links {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+  }
+  .links a {
+    text-decoration: none;
+    color: var(--ink-muted);
+  }
+  .links a:hover {
+    color: var(--accent);
+  }
+</style>

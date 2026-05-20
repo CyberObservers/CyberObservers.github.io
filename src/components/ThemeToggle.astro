@@ -1,0 +1,149 @@
+---
+---
+
+<div class="theme-toggle-wrap">
+  <button id="theme-toggle" type="button" aria-label="Toggle color theme">
+    <svg class="icon sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+    </svg>
+    <svg class="icon moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+    </svg>
+    <svg class="icon monitor" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="2.5" y="3.5" width="19" height="13" rx="2" />
+      <path d="M8 21h8M12 16.5V21" />
+    </svg>
+  </button>
+  <span class="theme-tt" id="theme-tt" role="tooltip">
+    <span class="state">Follows system</span>
+    <span class="hint">click to switch to light</span>
+  </span>
+</div>
+
+<style is:global>
+  .theme-toggle-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  #theme-toggle {
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-muted);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, transform 0.2s;
+    padding: 0;
+  }
+  #theme-toggle:hover {
+    color: var(--ink);
+    border-color: var(--ink-muted);
+    transform: rotate(15deg);
+  }
+  #theme-toggle .icon { display: none; }
+
+  :root:not([data-theme]) #theme-toggle .monitor { display: block; }
+  :root[data-theme='light'] #theme-toggle .sun { display: block; }
+  :root[data-theme='dark'] #theme-toggle .moon { display: block; }
+
+  /* tooltip */
+  .theme-tt {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 0.5rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 30;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: right;
+  }
+  .theme-tt::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 12px;
+    border: 5px solid transparent;
+    border-bottom-color: var(--ink);
+  }
+  .theme-tt .state {
+    display: block;
+    font-weight: 600;
+  }
+  .theme-tt .hint {
+    display: block;
+    opacity: 0.65;
+    font-size: 0.72rem;
+    font-family: var(--mono);
+  }
+  .theme-toggle-wrap:hover .theme-tt,
+  #theme-toggle:focus-visible ~ .theme-tt {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* on small screens, pin tooltip to the right edge of nav */
+  @media (max-width: 480px) {
+    .theme-tt {
+      font-size: 0.72rem;
+      padding: 0.4rem 0.55rem;
+    }
+  }
+</style>
+
+<script>
+  type ThemeState = 'system' | 'light' | 'dark';
+  const STATES: Record<ThemeState, { state: string; hint: string }> = {
+    system: { state: 'Follows system', hint: 'click to switch to light' },
+    light: { state: 'Light mode', hint: 'click to switch to dark' },
+    dark: { state: 'Dark mode', hint: 'click to follow system' },
+  };
+
+  const root = document.documentElement;
+  const btn = document.getElementById('theme-toggle');
+  const ttState = document.querySelector<HTMLElement>('.theme-tt .state');
+  const ttHint = document.querySelector<HTMLElement>('.theme-tt .hint');
+
+  function currentState(): ThemeState {
+    const v = root.dataset.theme;
+    return v === 'light' || v === 'dark' ? v : 'system';
+  }
+
+  function syncTooltip(s: ThemeState) {
+    if (ttState) ttState.textContent = STATES[s].state;
+    if (ttHint) ttHint.textContent = STATES[s].hint;
+    btn?.setAttribute('aria-label', STATES[s].state + ' — ' + STATES[s].hint);
+  }
+
+  syncTooltip(currentState());
+
+  btn?.addEventListener('click', () => {
+    const cur = currentState();
+    let next: ThemeState;
+    if (cur === 'system') next = 'light';
+    else if (cur === 'light') next = 'dark';
+    else next = 'system';
+
+    if (next === 'system') {
+      delete root.dataset.theme;
+      try { localStorage.removeItem('theme'); } catch (e) {}
+    } else {
+      root.dataset.theme = next;
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    }
+    syncTooltip(next);
+  });
+</script>

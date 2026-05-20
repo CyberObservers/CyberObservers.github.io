@@ -1,0 +1,26 @@
+---
+import { SITE } from '../consts';
+import SocialIcons from './SocialIcons.astro';
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <SocialIcons size={18} showRss />
+  <div class="copy">© {year} {SITE.author}</div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--ink-muted);
+    font-size: 0.85rem;
+  }
+  .copy {
+    color: var(--ink-muted);
+  }
+</style>

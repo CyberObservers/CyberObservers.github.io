@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="Blog" description="Notes and longer writing.">
+  <h1>Blog</h1>
+  <p class="muted intro">
+    Notes, technical write-ups, and the occasional longer piece.
+  </p>
+
+  <ul class="posts">
+    {posts.map((post) => (
+      <li>
+        <a href={`/blog/${post.id}/`}>
+          <div class="title">{post.data.title}</div>
+          {post.data.description && (
+            <div class="muted desc">{post.data.description}</div>
+          )}
+          <div class="muted meta">
+            <time datetime={post.data.pubDate.toISOString()}>
+              {post.data.pubDate.toLocaleDateString('en-US', {
+                year: 'numeric', month: 'long', day: 'numeric',
+              })}
+            </time>
+            {post.data.tags.length > 0 && (
+              <span class="tags">
+                {post.data.tags.map((t) => <span class="tag">{t}</span>)}
+              </span>
+            )}
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  {posts.length === 0 && <p class="muted">No posts yet.</p>}
+</BaseLayout>
+
+<style>
+  .intro {
+    margin-bottom: 2rem;
+  }
+  .posts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .posts li {
+    border-bottom: 1px solid var(--rule);
+  }
+  .posts a {
+    display: block;
+    padding: 1.25rem 0;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .posts a:hover .title {
+    color: var(--accent);
+  }
+  .title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+    transition: color 0.15s;
+  }
+  .desc {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+  }
+  .tags {
+    display: flex;
+    gap: 0.25rem;
+  }
+</style>

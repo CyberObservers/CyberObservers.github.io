@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+import SocialIcons from '../components/SocialIcons.astro';
+import { getCollection } from 'astro:content';
+import { publications } from '../data/publications';
+import { projects } from '../data/projects';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const recentPubs = publications.slice(0, 2);
+const featuredProjects = projects.slice(0, 2);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <h1>Hello — I'm <span class="name">{SITE.author}</span>.</h1>
+    <p class="lede">
+      I build <strong>web applications and intelligent systems</strong> — at the
+      intersection of software engineering and AI. Incoming
+      <strong>SDE Intern @ Amazon (Summer 2026)</strong>.
+    </p>
+    <div class="contact">
+      <SocialIcons size={22} />
+    </div>
+  </section>
+
+  <hr />
+
+  <section>
+    <h2>About</h2>
+    <p>
+      I'm a CS Master's student at <strong>UC Irvine</strong> (expected Dec 2026)
+      and an incoming <strong>SDE Intern at Amazon · Summer 2026</strong>. Before
+      UCI, I completed my B.Eng. in Software Engineering at
+      <strong>Tongji University</strong>.
+    </p>
+    <p>
+      I like building things that sit at the
+      <strong>intersection of software and AI</strong> — full-stack web apps, RAG
+      and LLM-powered tools, distributed data pipelines, and the infrastructure
+      underneath. I'm comfortable shipping across the stack: React/Vue,
+      Node/Python/Java, Postgres/ClickHouse, Docker and Kubernetes on GCP and AWS.
+    </p>
+    <p>
+      I also do research. I'm currently with the
+      <strong>Shang Data Lab @ UCSD</strong> on interpretable LLM-based decision
+      modeling, and previously worked on <em>SAFEFLOW</em> (LLM/VLM agent safety)
+      at Texas A&amp;M and reinforcement learning for drone-truck delivery at
+      Tongji. I care about making intelligent systems both
+      <strong>useful in production</strong> and
+      <strong>trustworthy in principle</strong>.
+    </p>
+    <p>
+      <a href="/cv.pdf">Download CV (PDF) →</a>
+    </p>
+  </section>
+
+  <section>
+    <div class="row">
+      <h2>Selected publications</h2>
+      <a href="/publications" class="more">all →</a>
+    </div>
+    <ul class="pub-list">
+      {recentPubs.map((p) => (
+        <li>
+          <div class="pub-title">{p.title}</div>
+          <div class="pub-meta muted">{p.authors} · {p.venue}, {p.year}</div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <div class="row">
+      <h2>Projects</h2>
+      <a href="/projects" class="more">all →</a>
+    </div>
+    <ul class="proj-list">
+      {featuredProjects.map((p) => (
+        <li>
+          <div class="pub-title">{p.name}</div>
+          <div class="muted">{p.blurb}</div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {posts.length > 0 && (
+    <section>
+      <div class="row">
+        <h2>Recent writing</h2>
+        <a href="/blog" class="more">all →</a>
+      </div>
+      <ul class="post-list">
+        {posts.map((post) => (
+          <li>
+            <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+            <span class="muted date">
+              {post.data.pubDate.toLocaleDateString('en-US', {
+                year: 'numeric', month: 'short', day: 'numeric',
+              })}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 1rem 0 0.5rem;
+  }
+  .name {
+    color: var(--name);
+    font-style: italic;
+  }
+  .lede {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    margin-top: 0.75rem;
+  }
+  .contact {
+    margin-top: 1rem;
+  }
+  .row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .more {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    text-decoration: none;
+  }
+  .more:hover {
+    color: var(--accent);
+  }
+  .pub-list, .proj-list, .post-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .pub-list li, .proj-list li {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .pub-list li:last-child, .proj-list li:last-child {
+    border-bottom: none;
+  }
+  .pub-title {
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+  }
+  .post-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .post-list a {
+    text-decoration: none;
+  }
+  .post-list a:hover {
+    color: var(--accent);
+  }
+  .date {
+    white-space: nowrap;
+    font-size: 0.85rem;
+  }
+</style>

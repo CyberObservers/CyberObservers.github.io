@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { projects } from '../data/projects';
+---
+
+<BaseLayout title="Projects" description="Side projects, open-source work, and experiments.">
+  <h1>Projects</h1>
+  <p class="muted intro">
+    Things I've built — open-source tools, research code, and weekend experiments.
+  </p>
+
+  <ul class="projects">
+    {projects.map((p) => (
+      <li>
+        <div class="head">
+          <h3>{p.name}</h3>
+          {p.status && <span class={`status status-${p.status}`}>{p.status}</span>}
+        </div>
+        <p>{p.blurb}</p>
+        <div class="stack">
+          {p.stack.map((s) => <span class="tag">{s}</span>)}
+        </div>
+        <div class="links">
+          {p.url && <a href={p.url} target="_blank" rel="noopener">Live →</a>}
+          {p.repo && <a href={p.repo} target="_blank" rel="noopener">Code →</a>}
+        </div>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
+
+<style>
+  .intro {
+    margin-bottom: 2rem;
+  }
+  .projects {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .projects li {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .projects li:last-child {
+    border-bottom: none;
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .head h3 {
+    margin: 0;
+  }
+  .status {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .status-live { background: #d4ead4; color: #2d5d2d; }
+  .status-wip { background: var(--accent-soft); color: var(--accent); }
+  .status-archived { background: var(--rule); color: var(--ink-muted); }
+  .stack {
+    margin: 0.5rem 0;
+  }
+  .links {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+</style>
